@@ -1,5 +1,7 @@
 # COMMIT CLI
 
+![cover](https://i.imgur.com/trKhxBh.jpeg)
+
 A CLI to replace your `git commit` command, so your git message can partially follow [the Conventional Changelog](https://github.com/conventional-changelog/conventional-changelog) ecosystem. And yes, it is build on top of [Go](https://go.dev)
 
 ## Install
