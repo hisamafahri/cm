@@ -85,16 +85,22 @@ func Commit() *cobra.Command {
 			}
 
 			i, _, errType := changeTypePrompt.Run()
-			commitScope, errScope := scopePrompt.Run()
-			commitMessage, errMessage := commitMessagePrompt.Run()
 
 			if errType != nil {
-				fmt.Printf("Commit failed %v\n", errType)
+				fmt.Printf("Commit type is required: %v\n", errType)
 				return
-			} else if errScope != nil {
+			}
+
+			commitScope, errScope := scopePrompt.Run()
+
+			if errScope != nil {
 				fmt.Printf("Commit failed %v\n", errScope)
 				return
-			} else if errMessage != nil {
+			}
+
+			commitMessage, errMessage := commitMessagePrompt.Run()
+
+			if errMessage != nil {
 				fmt.Printf("Commit failed %v\n", errMessage)
 				return
 			}
