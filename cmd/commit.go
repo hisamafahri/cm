@@ -57,6 +57,8 @@ func Commit() *cobra.Command {
 			validateScope := func(input string) error {
 				if len(input) > 25 {
 					return errors.New("commit scope must have less than 25 characters")
+				} else if len(input) < 2 {
+					return errors.New("commit scope must have more than 2 characters")
 				}
 				return nil
 			}
