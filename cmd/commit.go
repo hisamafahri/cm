@@ -44,18 +44,12 @@ func Commit() *cobra.Command {
 		Long: `Simple but powerful CLI to help your commit message to follow
 		conventional commit message`,
 		Run: func(cmd *cobra.Command, args []string) {
+
 			changeTypePrompt := promptui.Select{
 				Label:     "Type of Change",
 				Items:     commitTypes,
 				Templates: templates,
 				Size:      8,
-			}
-
-			i, _, err := changeTypePrompt.Run()
-
-			if err != nil {
-				fmt.Printf("Commit failed %v\n", err)
-				return
 			}
 
 			// Scope
@@ -70,13 +64,6 @@ func Commit() *cobra.Command {
 			scopePrompt := promptui.Prompt{
 				Label:    "Scope of changes (eg. file, function, etc)",
 				Validate: validateScope,
-			}
-
-			commitScope, err := scopePrompt.Run()
-
-			if err != nil {
-				fmt.Printf("Commit failed %v\n", err)
-				return
 			}
 
 			// message
@@ -95,10 +82,18 @@ func Commit() *cobra.Command {
 				Validate: validateCommitMessage,
 			}
 
-			commitMessage, err := commitMessagePrompt.Run()
+			i, _, errType := changeTypePrompt.Run()
+			commitScope, errScope := scopePrompt.Run()
+			commitMessage, errMessage := commitMessagePrompt.Run()
 
-			if err != nil {
-				fmt.Printf("Commit failed %v\n", err)
+			if errType != nil {
+				fmt.Printf("Commit failed %v\n", errType)
+				return
+			} else if errScope != nil {
+				fmt.Printf("Commit failed %v\n", errScope)
+				return
+			} else if errMessage != nil {
+				fmt.Printf("Commit failed %v\n", errMessage)
 				return
 			}
 
@@ -107,7 +102,7 @@ func Commit() *cobra.Command {
 			// fmt.Printf("Commit message: %q\n", commitMessage)
 
 			fullCommit := "git commit -m \"" + commitTypes[i].Name + "(" + commitScope + "): " + commitMessage + "\""
-			fmt.Println(fullCommit)
+
 			for _, c := range []string{fullCommit} {
 				p := script.Exec(c)
 				fmt.Println("Exit Status:", p.ExitStatus())
