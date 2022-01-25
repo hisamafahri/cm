@@ -15,9 +15,21 @@ go get github.com/hisamafahri/commit
 ## Usage
 
 ```bash
-git add . # or the scope of the file you wanna commit
+git add <file-or-folder> # or the scope of the file you wanna commit
 commit
 ```
+
+To commit all of the changes in the current directory, you can easily run:
+
+```bash
+commit -a # or commit --all
+
+# This command will substitute:
+# git add .
+# commit
+```
+
+By running that command, you will add all of the changes in the *current directory* and commit it automatically. :)
 
 ## Author
 
