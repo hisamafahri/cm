@@ -4,8 +4,8 @@ import (
 	"errors"
 	"fmt"
 	"os"
-	"strings"
 
+	"github.com/bitfield/script"
 	"github.com/manifoldco/promptui"
 	"github.com/spf13/cobra"
 )
@@ -16,7 +16,7 @@ type commitStruct struct {
 }
 
 func Commit() *cobra.Command {
-	commitType := []commitStruct{
+	commitTypes := []commitStruct{
 		{Name: "feat", Description: "A new feature"},
 		{Name: "fix", Description: "A bug fix"},
 		{Name: "docs", Description: "Documentation only changes"},
@@ -25,14 +25,6 @@ func Commit() *cobra.Command {
 		{Name: "perf", Description: "A code change that improves performance"},
 		{Name: "test", Description: "Adding missing or correcting existing tests"},
 		{Name: "chore", Description: "Changes to the build process or auxiliary tools and libraries such as documentation generation"},
-	}
-
-	searcher := func(input string, index int) bool {
-		pepper := commitType[index]
-		name := strings.Replace(strings.ToLower(pepper.Name), " ", "", -1)
-		input = strings.Replace(strings.ToLower(input), " ", "", -1)
-
-		return strings.Contains(name, input)
 	}
 
 	templates := &promptui.SelectTemplates{
@@ -54,13 +46,12 @@ func Commit() *cobra.Command {
 		Run: func(cmd *cobra.Command, args []string) {
 			changeTypePrompt := promptui.Select{
 				Label:     "Type of Change",
-				Searcher:  searcher,
-				Items:     commitType,
+				Items:     commitTypes,
 				Templates: templates,
 				Size:      8,
 			}
 
-			_, commitType, err := changeTypePrompt.Run()
+			i, _, err := changeTypePrompt.Run()
 
 			if err != nil {
 				fmt.Printf("Commit failed %v\n", err)
@@ -111,9 +102,25 @@ func Commit() *cobra.Command {
 				return
 			}
 
-			fmt.Printf("Commit Type: %q\n", commitType)
-			fmt.Printf("Commit scope: %q\n", commitScope)
-			fmt.Printf("Commit message: %q\n", commitMessage)
+			// fmt.Printf("Commit Type: %q\n", commitTypes[i].Name)
+			// fmt.Printf("Commit scope: %q\n", commitScope)
+			// fmt.Printf("Commit message: %q\n", commitMessage)
+
+			fullCommit := "git commit -m \"" + commitTypes[i].Name + "(" + commitScope + "): " + commitMessage + "\""
+			fmt.Println(fullCommit)
+			for _, c := range []string{fullCommit} {
+				p := script.Exec(c)
+				fmt.Println("Exit Status:", p.ExitStatus())
+				if err := p.Error(); err != nil {
+					p.SetError(nil)
+					out, _ := p.Stdout()
+					fmt.Println(out)
+				} else {
+					out, _ := p.Stdout()
+					fmt.Println(out)
+				}
+				fmt.Println("---")
+			}
 		},
 	}
 }
