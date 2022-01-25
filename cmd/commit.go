@@ -97,10 +97,6 @@ func Commit() *cobra.Command {
 				return
 			}
 
-			// fmt.Printf("Commit Type: %q\n", commitTypes[i].Name)
-			// fmt.Printf("Commit scope: %q\n", commitScope)
-			// fmt.Printf("Commit message: %q\n", commitMessage)
-
 			fullCommit := "git commit -m \"" + commitTypes[i].Name + "(" + commitScope + "): " + commitMessage + "\""
 
 			for _, c := range []string{fullCommit} {
