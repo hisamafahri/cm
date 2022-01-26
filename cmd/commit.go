@@ -62,7 +62,7 @@ var commitCommand = &cobra.Command{
 			if len(input) > 25 {
 				return errors.New("commit scope must have less than 25 characters")
 			} else if len(input) < 2 {
-				return errors.New("commit scope must have more than 2 characters")
+				return errors.New("commit scope must have more than 1 characters")
 			}
 			return nil
 		}
@@ -77,7 +77,7 @@ var commitCommand = &cobra.Command{
 		validateCommitMessage := func(input string) error {
 			if len(input) > 100 {
 				return errors.New("commit message must have less than 100 characters")
-			} else if len(input) < 5 {
+			} else if len(input) < 6 {
 				return errors.New("commit message must have more than 5 characters")
 			}
 			return nil
@@ -91,21 +91,21 @@ var commitCommand = &cobra.Command{
 		i, _, errType := changeTypePrompt.Run()
 
 		if errType != nil {
-			fmt.Printf("Commit type is required: %v\n", errType)
+			fmt.Println(aurora.White(" ERROR ").BgRed().Bold(), "Commit type is required!")
 			return
 		}
 
 		commitScope, errScope := scopePrompt.Run()
 
 		if errScope != nil {
-			fmt.Printf("Commit failed %v\n", errScope)
+			fmt.Println(aurora.White(" ERROR ").BgRed().Bold(), "Commit failed!")
 			return
 		}
 
 		commitMessage, errMessage := commitMessagePrompt.Run()
 
 		if errMessage != nil {
-			fmt.Printf("Commit failed %v\n", errMessage)
+			fmt.Println(aurora.White(" ERROR ").BgRed().Bold(), "Commit failed!")
 			return
 		}
 
@@ -113,29 +113,30 @@ var commitCommand = &cobra.Command{
 
 		if allFlag {
 			for _, c := range []string{"git add ."} {
+				fmt.Println(aurora.Black(" INFO ").BgBrightWhite().Bold(), "Staging changes...")
 				p := script.Exec(c)
-				// fmt.Println("Exit Status:", p.ExitStatus())
 				if err := p.Error(); err != nil {
 					p.SetError(nil)
-					out, _ := p.Stdout()
-					fmt.Println(out)
+					output, _ := p.String()
+					fmt.Println(aurora.White(" ERROR ").BgRed().Bold(), output)
 				} else {
-					fmt.Println(aurora.Black(" Status OK ").BgGreen().Bold(), "Successfully staged changes")
+					fmt.Println(aurora.Black(" SUCCESS ").BgGreen().Bold(), "Successfully staged changes")
 				}
 			}
 		}
 
 		for _, c := range []string{fullCommit} {
+			fmt.Println() // add break line
+			fmt.Println(aurora.Black(" INFO ").BgBrightWhite().Bold(), "Committing changes...")
 			p := script.Exec(c)
-			// fmt.Println("Exit Status:", p.ExitStatus())
 			if err := p.Error(); err != nil {
 				p.SetError(nil)
-				out, _ := p.Stdout()
-				fmt.Println(out)
+				output, _ := p.String()
+				fmt.Println(aurora.White(" ERROR ").BgRed().Bold(), output)
 			} else {
-				fmt.Println(aurora.Black(" Processing ").BgBrightWhite().Bold())
-				p.Stdout()
-				fmt.Println(aurora.Black(" Status OK ").BgGreen().Bold(), "Successfully commit changes")
+				output, _ := p.String()
+				fmt.Println(aurora.Black(" INFO ").BgBrightWhite().Bold(), output)
+				fmt.Println(aurora.Black(" SUCCESS ").BgGreen().Bold(), "Successfully commit changes")
 			}
 		}
 	},
@@ -143,7 +144,7 @@ var commitCommand = &cobra.Command{
 
 func Execute() {
 	if err := commitCommand.Execute(); err != nil {
-		fmt.Println(err)
+		fmt.Println(aurora.White(" ERROR ").BgRed().Bold(), err)
 		os.Exit(1)
 	}
 }
