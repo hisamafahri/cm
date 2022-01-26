@@ -120,8 +120,6 @@ var commitCommand = &cobra.Command{
 					out, _ := p.Stdout()
 					fmt.Println(out)
 				} else {
-					// out, _ := p.Stdout()
-					// fmt.Println("Successfully run `git add .`\nExit status: ", out)
 					fmt.Println(aurora.Black(" Status OK ").BgGreen().Bold(), "Successfully staged changes")
 				}
 			}
@@ -136,11 +134,9 @@ var commitCommand = &cobra.Command{
 				fmt.Println(out)
 			} else {
 				fmt.Println(aurora.Black(" Processing ").BgBrightWhite().Bold())
-				out, _ := p.Stdout()
-				fmt.Println(out)
+				p.Stdout()
 				fmt.Println(aurora.Black(" Status OK ").BgGreen().Bold(), "Successfully commit changes")
 			}
-			// fmt.Println("---")
 		}
 	},
 }
