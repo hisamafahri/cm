@@ -6,6 +6,7 @@ import (
 	"os"
 
 	"github.com/bitfield/script"
+	"github.com/logrusorgru/aurora"
 	"github.com/manifoldco/promptui"
 	"github.com/spf13/cobra"
 )
@@ -119,24 +120,27 @@ var commitCommand = &cobra.Command{
 					out, _ := p.Stdout()
 					fmt.Println(out)
 				} else {
-					out, _ := p.Stdout()
-					fmt.Println("Successfully run `git add .`\nExit status: ", out)
+					// out, _ := p.Stdout()
+					// fmt.Println("Successfully run `git add .`\nExit status: ", out)
+					fmt.Println(aurora.Black(" Status OK ").BgGreen().Bold(), "Successfully staged changes")
 				}
 			}
 		}
 
 		for _, c := range []string{fullCommit} {
 			p := script.Exec(c)
-			fmt.Println("Exit Status:", p.ExitStatus())
+			// fmt.Println("Exit Status:", p.ExitStatus())
 			if err := p.Error(); err != nil {
 				p.SetError(nil)
 				out, _ := p.Stdout()
 				fmt.Println(out)
 			} else {
+				fmt.Println(aurora.Black(" Processing ").BgBrightWhite().Bold())
 				out, _ := p.Stdout()
 				fmt.Println(out)
+				fmt.Println(aurora.Black(" Status OK ").BgGreen().Bold(), "Successfully commit changes")
 			}
-			fmt.Println("---")
+			// fmt.Println("---")
 		}
 	},
 }

@@ -4,6 +4,7 @@ go 1.17
 
 require (
 	github.com/bitfield/script v0.18.3
+	github.com/logrusorgru/aurora v2.0.3+incompatible
 	github.com/manifoldco/promptui v0.9.0
 	github.com/spf13/cobra v1.3.0
 )
