@@ -3,11 +3,12 @@ package cmd
 import (
 	"fmt"
 	"os"
+	"strconv"
 
-	"github.com/hisamafahri/commit/data"
 	"github.com/hisamafahri/commit/helper"
+	"github.com/hisamafahri/commit/src/base"
+	"github.com/hisamafahri/commit/src/functions"
 	"github.com/logrusorgru/aurora"
-	"github.com/manifoldco/promptui"
 	"github.com/spf13/cobra"
 )
 
@@ -32,49 +33,16 @@ var commitCommand = &cobra.Command{
 
 		allFlag, _ := cmd.Flags().GetBool("all")
 
-		changeTypePrompt := promptui.Select{
-			Label:     "Type of Change",
-			Items:     data.CommitTypes,
-			Templates: data.Templates,
-			Size:      8,
-		}
+		result, err := functions.RunPrompt()
 
-		// Scope
-
-		scopePrompt := promptui.Prompt{
-			Label:    "Scope of changes (eg. file, function, etc)",
-			Validate: data.ValidateScope,
-		}
-
-		// message
-
-		commitMessagePrompt := promptui.Prompt{
-			Label:    "Commit message title (min 5 & max 100)",
-			Validate: data.ValidateCommitMessage,
-		}
-
-		i, _, errType := changeTypePrompt.Run()
-
-		if errType != nil {
-			fmt.Println(aurora.White(" ERROR ").BgRed().Bold(), "Commit type is required!")
-			return
-		}
-
-		commitScope, errScope := scopePrompt.Run()
-
-		if errScope != nil {
+		if err != nil {
 			fmt.Println(aurora.White(" ERROR ").BgRed().Bold(), "Commit failed!")
 			return
 		}
 
-		commitMessage, errMessage := commitMessagePrompt.Run()
+		index, _ := strconv.Atoi(result[0])
 
-		if errMessage != nil {
-			fmt.Println(aurora.White(" ERROR ").BgRed().Bold(), "Commit failed!")
-			return
-		}
-
-		commitCommand := "git commit -m \"" + data.CommitTypes[i].Name + "(" + commitScope + "): " + commitMessage + "\""
+		commitCommand := "git commit -m \"" + base.CommitTypes[index].Name + "(" + result[1] + "): " + result[2] + "\""
 
 		if allFlag {
 			addAllChanges()

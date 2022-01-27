@@ -1,4 +1,4 @@
-package data
+package functions
 
 import "github.com/manifoldco/promptui"
 
