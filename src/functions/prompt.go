@@ -25,22 +25,22 @@ func RunPrompt() ([3]string, error) {
 		Validate: ValidateCommitMessage,
 	}
 
-	i, _, errT := changeTypePrompt.Run()
-
-	commitScope, errS := scopePrompt.Run()
-
-	commitMessage, errM := commitMessagePrompt.Run()
-
 	/*
 		Need better error handling approach
 	*/
+	i, _, err := changeTypePrompt.Run()
+	if err != nil {
+		return [3]string{}, err
+	}
 
-	if errT != nil {
-		return [3]string{}, errT
-	} else if errS != nil {
-		return [3]string{}, errS
-	} else if errM != nil {
-		return [3]string{}, errM
+	commitScope, err := scopePrompt.Run()
+	if err != nil {
+		return [3]string{}, err
+	}
+
+	commitMessage, err := commitMessagePrompt.Run()
+	if err != nil {
+		return [3]string{}, err
 	}
 
 	return [3]string{strconv.Itoa(i), commitScope, commitMessage}, nil

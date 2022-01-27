@@ -31,7 +31,9 @@ var commitCommand = &cobra.Command{
 			return
 		}
 
-		allFlag, _ := cmd.Flags().GetBool("all")
+		/*
+			Run the prompt or return an error
+		*/
 
 		result, err := functions.RunPrompt()
 
@@ -40,14 +42,29 @@ var commitCommand = &cobra.Command{
 			return
 		}
 
+		/*
+			Formulating the commit message
+		*/
+
 		index, _ := strconv.Atoi(result[0])
 
 		commitCommand := "git commit -m \"" + base.CommitTypes[index].Name + "(" + result[1] + "): " + result[2] + "\""
 
+		/*
+			Get the -a or --all flag
+		*/
+		allFlag, _ := cmd.Flags().GetBool("all")
+
+		/*
+			if flag -a or --all exist, run `git add .` command
+		*/
 		if allFlag {
 			addAllChanges()
 		}
 
+		/*
+			Commit the changes
+		*/
 		commit(commitCommand)
 	},
 }
