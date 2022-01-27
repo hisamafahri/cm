@@ -6,7 +6,8 @@ import (
 	"os"
 
 	"github.com/bitfield/script"
-	"github.com/hisamafahri/commit/pkg"
+	"github.com/hisamafahri/commit/data"
+	"github.com/hisamafahri/commit/helper"
 	"github.com/logrusorgru/aurora"
 	"github.com/manifoldco/promptui"
 	"github.com/spf13/cobra"
@@ -14,31 +15,11 @@ import (
 
 var All bool
 
-type commitStruct struct {
-	Name        string
-	Description string
-}
-
-var commitTypes = []commitStruct{
-	{Name: "feat", Description: "A new feature"},
-	{Name: "fix", Description: "A bug fix"},
-	{Name: "docs", Description: "Documentation only changes"},
-	{Name: "style", Description: "Changes that do not affect the meaning of the code (white-space, formatting, missing semi-colons, etc)"},
-	{Name: "refactor", Description: "A code change that neither fixes a bug nor adds a feature"},
-	{Name: "perf", Description: "A code change that improves performance"},
-	{Name: "test", Description: "Adding missing or correcting existing tests"},
-	{Name: "chore", Description: "Changes to the build process or auxiliary tools and libraries such as documentation generation"},
-}
-
 var templates = &promptui.SelectTemplates{
 	Label:    "{{ . }}?",
 	Active:   "> {{ .Name | cyan }}: {{ .Description | red }}",
 	Inactive: "  {{ .Name | cyan }}: {{ .Description | red }}",
 	Selected: "> {{ .Name | cyan }}: {{ .Description | red }}",
-	// 		Details: `
-	// --------- Change Type ----------
-	// {{ "Name:" | faint }}	{{ .Name }}
-	// {{ "Desc:" | faint }}	{{ .Description }}`,
 }
 
 var commitCommand = &cobra.Command{
@@ -47,8 +28,11 @@ var commitCommand = &cobra.Command{
 	Long: `Simple but powerful CLI to help your commit message to follow
 		conventional commit message`,
 	Run: func(cmd *cobra.Command, args []string) {
-
-		_, err := pkg.CheckDir()
+		/*
+			Check if current directory is a git repository
+			if it is not, return an error
+		*/
+		_, err := helper.CheckDir()
 
 		if err != nil {
 			fmt.Println(aurora.White(" ERROR ").BgRed().Bold(), err.Error())
@@ -59,7 +43,7 @@ var commitCommand = &cobra.Command{
 
 		changeTypePrompt := promptui.Select{
 			Label:     "Type of Change",
-			Items:     commitTypes,
+			Items:     data.CommitTypes,
 			Templates: templates,
 			Size:      8,
 		}
@@ -117,7 +101,7 @@ var commitCommand = &cobra.Command{
 			return
 		}
 
-		fullCommit := "git commit -m \"" + commitTypes[i].Name + "(" + commitScope + "): " + commitMessage + "\""
+		fullCommit := "git commit -m \"" + data.CommitTypes[i].Name + "(" + commitScope + "): " + commitMessage + "\""
 
 		if allFlag {
 			for _, c := range []string{"git add ."} {
