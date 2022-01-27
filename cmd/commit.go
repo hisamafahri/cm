@@ -15,13 +15,6 @@ import (
 
 var All bool
 
-var templates = &promptui.SelectTemplates{
-	Label:    "{{ . }}?",
-	Active:   "> {{ .Name | cyan }}: {{ .Description | red }}",
-	Inactive: "  {{ .Name | cyan }}: {{ .Description | red }}",
-	Selected: "> {{ .Name | cyan }}: {{ .Description | red }}",
-}
-
 var commitCommand = &cobra.Command{
 	Use:   "commit",
 	Short: "Commit is CLI to help you structurized your commit message",
@@ -44,7 +37,7 @@ var commitCommand = &cobra.Command{
 		changeTypePrompt := promptui.Select{
 			Label:     "Type of Change",
 			Items:     data.CommitTypes,
-			Templates: templates,
+			Templates: data.Templates,
 			Size:      8,
 		}
 
