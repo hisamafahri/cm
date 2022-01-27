@@ -1,7 +1,6 @@
 package cmd
 
 import (
-	"errors"
 	"fmt"
 	"os"
 
@@ -43,34 +42,16 @@ var commitCommand = &cobra.Command{
 
 		// Scope
 
-		validateScope := func(input string) error {
-			if len(input) > 25 {
-				return errors.New("commit scope must have less than 25 characters")
-			} else if len(input) < 2 {
-				return errors.New("commit scope must have more than 1 characters")
-			}
-			return nil
-		}
-
 		scopePrompt := promptui.Prompt{
 			Label:    "Scope of changes (eg. file, function, etc)",
-			Validate: validateScope,
+			Validate: data.ValidateScope,
 		}
 
 		// message
 
-		validateCommitMessage := func(input string) error {
-			if len(input) > 100 {
-				return errors.New("commit message must have less than 100 characters")
-			} else if len(input) < 6 {
-				return errors.New("commit message must have more than 5 characters")
-			}
-			return nil
-		}
-
 		commitMessagePrompt := promptui.Prompt{
 			Label:    "Commit message title (min 5 & max 100)",
-			Validate: validateCommitMessage,
+			Validate: data.ValidateCommitMessage,
 		}
 
 		i, _, errType := changeTypePrompt.Run()
