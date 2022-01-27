@@ -6,6 +6,7 @@ import (
 	"os"
 
 	"github.com/bitfield/script"
+	"github.com/hisamafahri/commit/pkg"
 	"github.com/logrusorgru/aurora"
 	"github.com/manifoldco/promptui"
 	"github.com/spf13/cobra"
@@ -46,6 +47,13 @@ var commitCommand = &cobra.Command{
 	Long: `Simple but powerful CLI to help your commit message to follow
 		conventional commit message`,
 	Run: func(cmd *cobra.Command, args []string) {
+
+		_, err := pkg.CheckDir()
+
+		if err != nil {
+			fmt.Println(aurora.White(" ERROR ").BgRed().Bold(), err.Error())
+			return
+		}
 
 		allFlag, _ := cmd.Flags().GetBool("all")
 
