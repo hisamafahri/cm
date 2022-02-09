@@ -9,7 +9,7 @@ A CLI to replace your `git commit` command, so your git message can partially fo
 Just run this:
 
 ```bash
-go get github.com/hisamafahri/commit
+go install github.com/hisamafahri/commit
 ```
 
 ## Usage
