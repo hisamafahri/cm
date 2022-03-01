@@ -1,4 +1,4 @@
-# COMMIT CLI
+# CM - A Commit CLI
 
 ![cover](https://i.imgur.com/trKhxBh.jpeg)
 
@@ -9,24 +9,24 @@ A CLI to replace your `git commit` command, so your git message can partially fo
 Just run this:
 
 ```bash
-go install github.com/hisamafahri/commit
+go install github.com/hisamafahri/cm
 ```
 
 ## Usage
 
 ```bash
 git add <file-or-folder> # or the scope of the file you wanna commit
-commit
+cm
 ```
 
 To commit all of the changes in the current directory, you can easily run:
 
 ```bash
-commit -a # or commit --all
+cm -a # or cm --all
 
 # This command will substitute:
 # git add .
-# commit
+# cm
 ```
 
 By running that command, you will add all of the changes in the *current directory* and commit it automatically. :)
