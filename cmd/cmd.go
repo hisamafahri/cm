@@ -3,11 +3,10 @@ package cmd
 import (
 	"fmt"
 	"os"
-	"strconv"
+	"strings"
 
-	"github.com/hisamafahri/commit/helper"
-	"github.com/hisamafahri/commit/src/base"
-	"github.com/hisamafahri/commit/src/functions"
+	"github.com/AlecAivazis/survey/v2"
+	"github.com/hisamafahri/cm/helper"
 	"github.com/logrusorgru/aurora"
 	"github.com/spf13/cobra"
 )
@@ -15,7 +14,7 @@ import (
 var All bool
 
 var commitCommand = &cobra.Command{
-	Use:   "commit",
+	Use:   "cm",
 	Short: "Commit is CLI to help you structurized your commit message",
 	Long: `Simple but powerful CLI to help your commit message to follow
 		conventional commit message`,
@@ -35,20 +34,29 @@ var commitCommand = &cobra.Command{
 			Run the prompt or return an error
 		*/
 
-		result, err := functions.RunPrompt()
+		// result, err := functions.RunPrompt()
+		answers := struct {
+			Type    string `survey:"types"`
+			Scope   string
+			Message string
+		}{}
 
-		if err != nil {
+		// perform the questions
+		errPrompt := survey.Ask(helper.Prompt, &answers)
+
+		if errPrompt != nil {
 			fmt.Println(aurora.White(" ERROR ").BgRed().Bold(), "Commit failed!")
 			return
 		}
+
+		// Split the commit type string
+		typeAbbrv := strings.Split(answers.Type, ":")
 
 		/*
 			Formulating the commit message
 		*/
 
-		index, _ := strconv.Atoi(result[0])
-
-		commitCommand := "git commit -m \"" + base.CommitTypes[index].Name + "(" + result[1] + "): " + result[2] + "\""
+		commitCommand := "git commit -m \"" + typeAbbrv[0] + "(" + answers.Scope + "): " + answers.Message + "\""
 
 		/*
 			Get the -a or --all flag
@@ -59,13 +67,13 @@ var commitCommand = &cobra.Command{
 			if flag -a or --all exist, run `git add .` command
 		*/
 		if allFlag {
-			addAllChanges()
+			helper.AddAllChanges()
 		}
 
 		/*
 			Commit the changes
 		*/
-		commit(commitCommand)
+		helper.Commit(commitCommand)
 	},
 }
 

@@ -1,4 +1,4 @@
-package cmd
+package helper
 
 import (
 	"fmt"
@@ -7,7 +7,7 @@ import (
 	"github.com/logrusorgru/aurora"
 )
 
-func addAllChanges() {
+func AddAllChanges() {
 	for _, c := range []string{"git add ."} {
 		fmt.Println(aurora.Black(" INFO ").BgBrightWhite().Bold(), "Staging changes...")
 		p := script.Exec(c)

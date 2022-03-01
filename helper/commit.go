@@ -1,4 +1,4 @@
-package cmd
+package helper
 
 import (
 	"fmt"
@@ -7,7 +7,7 @@ import (
 	"github.com/logrusorgru/aurora"
 )
 
-func commit(command string) {
+func Commit(command string) {
 	for _, c := range []string{command} {
 		fmt.Println() // add break line
 		fmt.Println(aurora.Black(" INFO ").BgBrightWhite().Bold(), "Committing changes...")
