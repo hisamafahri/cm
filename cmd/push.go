@@ -14,7 +14,7 @@ var pushCommand = &cobra.Command{
 	Use:     "push",
 	Aliases: []string{"p"},
 	Short:   "Push to remote repo",
-	Long:    `Push to remote repo, by default on the current branch and the 'origin' remote`,
+	Long:    `Push to remote repo, by default on the current branch and your chosen remote repo`,
 	Run: func(cmd *cobra.Command, args []string) {
 		// Check if current directory is a git repository
 		// if it is not, return an error
