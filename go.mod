@@ -2,6 +2,12 @@ module github.com/hisamafahri/cm
 
 go 1.17
 
+retract (
+	v1.0.0
+	v1.1.0
+	v1.2.0
+)
+
 require (
 	github.com/AlecAivazis/survey/v2 v2.3.2
 	github.com/bitfield/script v0.18.3
