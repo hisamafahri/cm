@@ -76,4 +76,7 @@ func init() {
 
 	// add 'push' subCommand
 	commitCommand.AddCommand(pushCommand)
+
+	// add 'version' subCommand
+	commitCommand.AddCommand(versionCmd)
 }
