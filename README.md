@@ -6,7 +6,7 @@ A CLI to replace your `git commit` command, so your git message can partially fo
 
 ## Install
 
-- Download the binary file of the latest version on the [release page](https://github.com/hisamafahri/cm/releases). And then place the file inside of your `bin` folder on the `$GOPATH/bin`.
+- Download the binary file of the latest version on the [release page](https://github.com/hisamafahri/cm/releases).
 
 - Through `go get`
   
