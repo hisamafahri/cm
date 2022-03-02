@@ -6,10 +6,14 @@ A CLI to replace your `git commit` command, so your git message can partially fo
 
 ## Install
 
+- Download the binary file of the latest version on the [release page](https://github.com/hisamafahri/cm/releases)
+
+- Through `go install`
+
 Just run this:
 
 ```bash
-go install github.com/hisamafahri/cm
+go install github.com/hisamafahri/cm@latest
 ```
 
 ## Usage
