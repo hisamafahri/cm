@@ -19,10 +19,9 @@ var commitCommand = &cobra.Command{
 	Long: `Simple but powerful CLI to help your commit message to follow
 		conventional commit message`,
 	Run: func(cmd *cobra.Command, args []string) {
-		/*
-			Check if current directory is a git repository
-			if it is not, return an error
-		*/
+
+		// Check if current directory is a git repository
+		// if it is not, return an error
 		_, err := helper.CheckDir()
 
 		if err != nil {
@@ -30,11 +29,7 @@ var commitCommand = &cobra.Command{
 			return
 		}
 
-		/*
-			Run the prompt or return an error
-		*/
-
-		// result, err := functions.RunPrompt()
+		// Run the prompt or return an error
 		answers := struct {
 			Type    string `survey:"types"`
 			Scope   string
@@ -52,27 +47,18 @@ var commitCommand = &cobra.Command{
 		// Split the commit type string
 		typeAbbrv := strings.Split(answers.Type, ":")
 
-		/*
-			Formulating the commit message
-		*/
-
+		// Formulating the commit message
 		commitCommand := "git commit -m \"" + typeAbbrv[0] + "(" + answers.Scope + "): " + answers.Message + "\""
 
-		/*
-			Get the -a or --all flag
-		*/
+		// Get the -a or --all flag
 		allFlag, _ := cmd.Flags().GetBool("all")
 
-		/*
-			if flag -a or --all exist, run `git add .` command
-		*/
+		// if flag -a or --all exist, run `git add .` command
 		if allFlag {
 			helper.AddAllChanges()
 		}
 
-		/*
-			Commit the changes
-		*/
+		// Commit the changes
 		helper.Commit(commitCommand)
 	},
 }
@@ -85,5 +71,9 @@ func Execute() {
 }
 
 func init() {
+	// add '-a' or '--all' flag
 	commitCommand.PersistentFlags().BoolVarP(&All, "all", "a", false, "Commit all changes in current directory")
+
+	// add 'push' subCommand
+	commitCommand.AddCommand(pushCommand)
 }
