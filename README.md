@@ -13,7 +13,7 @@ A CLI to replace your `git commit` command, so your git message can partially fo
   Just run this:
   
   ```bash
-  go install github.com/hisamafahri/cm@main
+  go install github.com/hisamafahri/cm
   ```
 
 ## Usage
