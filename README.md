@@ -56,6 +56,16 @@ $ cm p
   remote3: https://github.com/hisamafahri/remote3
 ```
 
+## Pushing Changes
+
+We also provided an improved `git log` for you, all you need to do is just run:
+
+```bash
+cm l # or cm log
+```
+
+![log](https://i.imgur.com/Xjgav2R.png)
+
 ## Author
 
 [Hisam A Fahri](https://hisamafahri.com): [@hisamafahri](https://github.com/hisamafahri)
