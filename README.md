@@ -2,7 +2,9 @@
 
 ![cover](https://i.imgur.com/LLdRKeZ.png)
 
-⚠️⚠️**IMPORTANT:**⚠️⚠️ This project is no longer actively maintained, in favor of [nit](https://github.com/hisamafahri/nit). While this project is no longer maintained, feel free to open an issue, or create a new pull request.
+⚠️⚠️ **IMPORTANT:** ⚠️⚠️ This project is no longer actively maintained, in favor of [nit](https://github.com/hisamafahri/nit). While this project is no longer maintained, feel free to open an issue, or create a new pull request.
+
+---
 
 A CLI to replace your `git commit` command, so your git message can partially follow [the Conventional Changelog](https://github.com/conventional-changelog/conventional-changelog) ecosystem. And yes, it is build on top of [Go](https://go.dev)
 
